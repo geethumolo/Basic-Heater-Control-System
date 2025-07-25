@@ -117,10 +117,10 @@ Brief description of the system:
 
 ### 6. Screenshots
 - Schematic Diagram (Off state)
- ![Off Screenshot](https://raw.githubusercontent.com/geethumolo/Basic-Heater-Control-System/main/screenshots/Off.png)
-<br>
+- ![Off Screenshot](https://raw.githubusercontent.com/geethumolo/Basic-Heater-Control-System/main/screenshots/Off.png)
+
 - Schematic Diagram (Running state)
- ![On Screenshot](https://raw.githubusercontent.com/geethumolo/Basic-Heater-Control-System/main/screenshots/On.png)
+- ![On Screenshot](https://raw.githubusercontent.com/geethumolo/Basic-Heater-Control-System/main/screenshots/On.png)
 
 
 ## References
