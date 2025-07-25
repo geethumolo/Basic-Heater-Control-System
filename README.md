@@ -13,31 +13,34 @@ Brief description of the system:
 ### 1. Minimum Sensor Requirements
 
 - **Primary Sensor:**\
-  `e.g., DHT22 (Digital Temperature and Humidity Sensor)`\
+  `DHT22 (Digital Temperature and Humidity Sensor)`\
   Justification:
 
   > Accurate temperature readings are crucial for reliable heater control.
 
 - **Optional Sensors (for future enhancements):**
 
-  - Overheat detection sensor
+  - Overheat detection sensor (e.g., thermal fuse)
   - Ambient humidity sensor
 
 ---
 
-### 3. System Block Diagram
+### 2. Communication Protocol Recommendation
 
+- **Chosen Protocol:** `I2C`
 
+  Justification:
+  > I2C is chosen due to its simplicity and ability to connect multiple devices over two wires, including the LCD and DHT sensor.
 
 ---
 
+
 ### 4. Future Roadmap
 
-| Feature                       | Description                                        |
-| ----------------------------- | -------------------------------------------------- |
-| **Overheating Protection**    | Integrate an overheat limit and emergency shutdown |
-| **Multiple Heating Profiles** | Support user-defined heating curves or profiles    |
-| **LED and Buzzer Alerts**     | Temperature-based LED and Buzzer notifications     |
+| Feature                   | Description                                        |
+| ------------------------- | -------------------------------------------------- |
+| Overheating Protection    | Integrate an overheat limit and emergency shutdown |
+| Multiple Heating Profiles | Support user-defined heating curves or profiles    |
 
 ---
 
@@ -45,74 +48,77 @@ Brief description of the system:
 
 ### 1. Platform Details
 
-- **Simulation Platform:** Wokwi
-- **Microcontroller:** `Arduino UNO`
-- **Language/Framework:** C++ (Arduino)
+- Simulation Platform: Wokwi
+- Microcontroller: Arduino UNO
+- Language/Framework: C++ (Arduino)
 
 ---
 
 ### 2. System States
 
-List of implemented states with description:
-
-| State              | Description                         |
-| ------------------ | ----------------------------------- |
-| **Idle**           | System initialized, awaiting action |
-| **Heating**        | Heater is ON, raising temperature   |
-| **Stabilizing**    | Approaching target temperature      |
-| **Target Reached** | Desired temperature maintained      |
-| **Overheat**       | Emergency state, heater turned OFF  |
+| State          | Description                         |
+| -------------- | ----------------------------------- |
+| Idle           | System initialized, awaiting action |
+| Heating        | Heater is ON, raising temperature   |
+| Stabilizing    | Approaching target temperature      |
+| Target Reached | Desired temperature maintained      |
+| Overheat       | Emergency state, heater turned OFF  |
 
 ---
 
-### 3. Control Logic
+### 3. Control Logic (Please refer this for Wokwi simulation runs)
 
-- **Temperature Read Interval:** `e.g., Every 1s using timer interrupt`
+- **Temperature Reading Logic:**
 
-- **Thresholds:**
+  - A `testMode` flag determines whether the system uses simulated temperature values (via a timed sequence) or reads actual temperature from the DHT22 sensor.
+  - When `testMode` is set to `true`, the temperature increases over time using a predefined sequence.
+  - When `testMode` is set to `false`, the DHT22 sensor is polled for real-time temperature values.
 
-  - Target Temp: `e.g., 40°C`
-  - Stabilizing Range: `±2°C`
-  - Overheat Temp: `e.g., > 50°C`
+- **Timing Intervals:**
 
-- **Heater Control Logic:**
+  - `lcdUpdateInterval`: 1000 ms (LCD refresh rate)
+  - `tempStepInterval`: 6000 ms (interval between simulated temperature changes)
+  - `overheatHoldTime`: 5000 ms (duration to hold in overheat state before reset)
 
-  ```cpp
-  if (temp < target - 2) {
-      // Heating
-  } else if (temp >= target - 2 && temp <= target + 2) {
-      // Stabilizing
-  } else if (temp > target + 2) {
-      // Overheat
-  }
-  ```
+- **Pin Configuration:**
 
----
+  - DHT22 Sensor: Digital Pin 3
+  - Switch/Button Input: Digital Pin 2
+  - Buzzer Output: Digital Pin 7
+  - LEDs for State Indication: Digital Pins 8–12
+  - LCD via I2C: Address 0x27
 
-### 5. Bonus Features
+- **Stage Determination Logic:**
 
-#### BLE Advertising
+  - `< 25°C` → Idle
+  - `25–31°C` → Heating
+  - `32–35°C` → Stabilizing
+  - `36–38°C` → Target Reached
+  - `≥ 39°C` → Overheat
 
+- **Activation & Reset:**
 
-#### Visual Indicators
-
-- LED colors:
-  - Green = Target Reached
-  - Red = Heating
-  - Yellow = Stabilizing
-  - Blinking Red = Overheat
-
+  - Heater system activates upon button press.
+  - When in Overheat state for 5 seconds, the system resets to Idle and restarts the simulation (if testMode is enabled).
 
 ---
 
-## Screenshots & Output Logs
+### 5. Additional Features
+
+- **Visual Indicators:**
+
+  - Five LEDs represent each system state. Only one LED is active at a time.
+  - Buzzer is triggered continuously during the Overheat state.
+
+- **Timing Mechanism:**
+
+  - All time-based updates use the `millis()` function for non-blocking periodic operations.
 
 
----
+## References
 
----
-
-##  References
-
-
+- Sensor datasheets
+- Arduino documentation
+- Wokwi simulation environment
+- LCD and DHT libraries for Arduino
 
