@@ -1,4 +1,4 @@
-# Heater Control System - Documentation
+# Heater Control System - Design Documentation
 Simulation run link: [Link](https://wokwi.com/projects/437441097611879425) (Please refer Heading 3: Control Logic for Wokwi simulation runs)
 
 ## Project Overview
