@@ -117,8 +117,9 @@ Brief description of the system:
 
 ### 6. Screenshots
 - Schematic Diagram (Off state)
-- 
+- ![Off Screenshot](../screenshots/Off.png)
 - Schematic Diagram (Running state)
+- ![On Screenshot](../screenshots/On.png)
 
 
 ## References
