@@ -125,8 +125,8 @@ Brief description of the system:
 
 ## References
 
-- Sensor datasheets
 - Arduino documentation
 - Wokwi simulation environment
 - LCD and DHT libraries for Arduino
+- ChatGPT - Documentation, bug fixing and formatting
 
