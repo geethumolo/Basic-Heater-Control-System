@@ -36,7 +36,7 @@ Brief description of the system:
 ---
 
 
-### 4. Future Roadmap
+### 3. Future Roadmap
 
 | Feature                   | Description                                        |
 | ------------------------- | -------------------------------------------------- |
@@ -67,7 +67,7 @@ Brief description of the system:
 
 ---
 
-### 3. Control Logic (Please refer this for Wokwi simulation runs)
+### 4. Control Logic (Please refer this for Wokwi simulation runs)
 
 - **Temperature Reading Logic:**
 
@@ -114,6 +114,11 @@ Brief description of the system:
 - **Timing Mechanism:**
 
   - All time-based updates use the `millis()` function for non-blocking periodic operations.
+
+### 6. Screenshots
+- Schematic Diagram (Off state)
+- 
+- Schematic Diagram (Running state)
 
 
 ## References
