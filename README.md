@@ -91,11 +91,11 @@ Brief description of the system:
 
 - **Stage Determination Logic:**
 
-  - `< 25°C` → Idle
-  - `25–31°C` → Heating
-  - `32–35°C` → Stabilizing
-  - `36–38°C` → Target Reached
-  - `≥ 39°C` → Overheat
+  - `< 25°C` > Idle
+  - `25–31°C` > Heating
+  - `32–35°C` > Stabilizing
+  - `36–38°C` > Target Reached
+  - `≥ 39°C` > Overheat
 
 - **Activation & Reset:**
 
