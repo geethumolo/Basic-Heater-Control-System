@@ -79,52 +79,58 @@ void determineStageFromTemp() {
   else if (temperature < 39) currentStage = 3;
   else currentStage = 4;
 }
-
 void loop() {
   unsigned long now = millis();
 
-  // Simulated temperature for testing
-  if (testMode) {
-    simulateTemperature();
-  } else {
-    float t = dht.readTemperature();
-    if (!isnan(t)) {
-      temperature = t;
-    }
-  }
-
-  // Button press to activate heating
+  // === Check for switch press to start heating ===
   if (!heatingActive && digitalRead(switchPin) == LOW) {
     heatingActive = true;
     lcd.clear();
+    lastTempUpdate = now; // reset simulation timing
+    tempStep = 0;
   }
 
+  // === All logic only runs after switch is pressed ===
   if (heatingActive) {
+    // === Temperature update ===
+    if (testMode) {
+      simulateTemperature();
+    } else {
+      float t = dht.readTemperature();
+      if (!isnan(t)) {
+        temperature = t;
+      }
+    }
+
     determineStageFromTemp();
     updateLEDs();
 
+    // === Overheat detection ===
     if (currentStage == 4 && !overheatTriggered) {
       overheatTriggered = true;
       overheatStartTime = now;
     }
 
+    // === Auto reset after overheat hold ===
     if (overheatTriggered && (now - overheatStartTime >= overheatHoldTime)) {
       heatingActive = false;
       overheatTriggered = false;
       currentStage = 0;
-      tempStep = 0;  // restart simulation
+      tempStep = 0;
       updateLEDs();
     }
-  }
 
-  // Buzzer
-  if (heatingActive && currentStage == 4) {
-    tone(buzzerPin, 1000);
+    // === Buzzer during overheat ===
+    if (currentStage == 4) {
+      tone(buzzerPin, 1000);
+    } else {
+      noTone(buzzerPin);
+    }
   } else {
-    noTone(buzzerPin);
+    noTone(buzzerPin);  // ensure buzzer is off before starting
   }
 
-  // LCD display
+  // === LCD Update ===
   if (now - lastLCDUpdate >= lcdUpdateInterval) {
     lastLCDUpdate = now;
     lcd.setCursor(0, 0);
